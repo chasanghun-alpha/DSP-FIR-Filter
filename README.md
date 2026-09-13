@@ -5,10 +5,10 @@
 **사용 도구**: C++ (`<complex>`, `<vector>`, `<cmath>`, `<algorithm>`)
 
 ## 개요
-C++로 1차원 z-Transform 계산기를 구현해 이론값과 비교했습니다(Lab 1).
-2차원 FIR 필터(convolution)를 구현해 grayscale 이미지에 3가지 커널을 적용했습니다(Lab 2).
+C++로 1차원 z-Transform 계산기를 구현해 이론값과 비교(Lab 1)
+2차원 FIR 필터(convolution)를 구현해 grayscale 이미지에 3가지 커널 적용(Lab 2)
 
-> 소스 코드는 보고서에 스크린샷으로만 들어 있어, 아래에 보고서 기준 핵심 코드를 옮겼습니다. 원본 `.cpp` 파일: [추가 정보 필요]
+> 소스 코드는 보고서에 스크린샷으로만 있어, 아래에 보고서 기준 핵심 코드를 옮김. 원본 `.cpp` 파일: [추가 정보 필요]
 
 ---
 
@@ -19,8 +19,8 @@ C++로 1차원 z-Transform 계산기를 구현해 이론값과 비교했습니�
 - `z = r·e^{jω}` (r = 0.9, ω = π/4)에서 이론식 `X(z) = 1 / (1 − a·z⁻¹)`과 비교
 
 ### 설계 및 구현
-- 신호가 시작 지점 이후에만 존재하는 **right-sided** 신호로 가정했습니다.
-- `X(z) = Σ x[n]·z⁻ⁿ`을 누적하면서 `z_pow /= z`로 z⁻ⁿ을 갱신합니다.
+- 신호가 시작 지점 이후에만 존재하는 **right-sided** 신호로 가정
+- `X(z) = Σ x[n]·z⁻ⁿ`을 누적하면서 `z_pow /= z`로 z⁻ⁿ 갱신
 
 ```cpp
 complex<double> zTransform1D(const vector<double>& x, complex<double> z) {
@@ -39,8 +39,8 @@ complex<double> zTransform1D(const vector<double>& x, complex<double> z) {
 finite length signal : X(z) = 1.161 - j0.751169
 이론식               : X(z) = 1.161 - j0.751169
 ```
-- aⁿu[n]의 ROC는 |z| > |a|입니다. |z| = 0.9 > 0.5로 ROC 안에 있으므로 급수가 수렴합니다.
-- 유한 길이 합이 이론값(무한 등비급수)과 같은 결과를 보였습니다.
+- aⁿu[n]의 ROC는 |z| > |a|. |z| = 0.9 > 0.5로 ROC 내부에 있으므로 급수 수렴
+- 유한 길이 합이 이론값(무한 등비급수)과 동일한 결과 확인
 
 ---
 
@@ -50,8 +50,8 @@ finite length signal : X(z) = 1.161 - j0.751169
 - 64×64 grayscale BMP(Lena_gray.bmp)의 R/G/B 채널에 2D FIR 필터를 적용하고, 커널별 이미지 변화를 관찰
 
 ### 설계 및 구현
-- 배열 대신 `vector<vector<>>`를 입력으로 받아 열 길이를 고정하지 않도록 했습니다.
-- 경계 밖 픽셀은 제외하고, `round()` + `clamp(0, 255)`로 RGB 범위로 정규화합니다.
+- 배열 대신 `vector<vector<>>`를 입력으로 받아 열 길이를 고정하지 않도록 구현
+- 경계 밖 픽셀은 제외하고, `round()` + `clamp(0, 255)`로 RGB 범위로 정규화
 
 ```cpp
 vector<vector<int>> firFilter2D(const vector<vector<BYTE>>& input,
@@ -86,13 +86,13 @@ vector<vector<int>> firFilter2D(const vector<vector<BYTE>>& input,
 |:---:|:---:|:---:|:---:|
 | ![original](docs/images/original.png) | ![kernel1](docs/images/kernel1_result.png) | ![kernel2](docs/images/kernel2_result.png) | ![kernel3](docs/images/kernel3_result.png) |
 
-<sub>※ 보고서 내 64×64 결과 이미지를 보기 편하도록 256×256으로 확대(nearest)했습니다.</sub>
+<sub>※ 보고서 내 64×64 결과 이미지를 보기 편하도록 256×256으로 확대(nearest)</sub>
 
-- **kernel1**: 고주파 성분을 억제해 경계가 흐려졌습니다.
-- **kernel2**: 중심 픽셀을 강조하고 주변과의 차이를 증폭해 경계선이 뚜렷해졌습니다.
-- **kernel3**: 성분 합(= DC gain)이 0이라 저주파 영역은 0(검정)이 되고, 물체의 윤곽선만 남았습니다.
-  - kernel1과 kernel2는 성분 합이 1이라 전체 밝기를 유지합니다.
+- **kernel1**: 고주파 성분 억제로 경계가 흐려짐
+- **kernel2**: 중심 픽셀 강조 및 주변과의 차이 증폭으로 경계선이 뚜렷해짐
+- **kernel3**: 성분 합(= DC gain)이 0이라 저주파 영역은 0(검정)이 되고, 물체의 윤곽선만 남음
+  - kernel1과 kernel2는 성분 합이 1이라 전체 밝기 유지
 
 ## 배운 점 / 의의
-- 디지털 이미지가 가공되는 원리를 이해했습니다.
-- 통신 신호처리의 noise 감소나 신호 증폭 방법론이 2D 이미지 처리에도 그대로 적용된다는 점이 흥미로웠습니다.
+- 디지털 이미지가 가공되는 원리 이해
+- 통신 신호처리의 noise 감소·신호 증폭 방법론이 2D 이미지 처리에도 그대로 적용된다는 점이 흥미로웠음
