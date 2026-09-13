@@ -4,6 +4,8 @@
 **기간**: ~2025.12 (제출일 2025.12.17)
 **사용 도구**: C++ (`<complex>`, `<vector>`, `<cmath>`, `<algorithm>`)
 
+📄 원본 보고서: [docs/DSP_FIR_Filter_Report.pdf](docs/DSP_FIR_Filter_Report.pdf)
+
 ## 개요
 C++로 1차원 z-Transform 계산기를 구현해 이론값과 비교(Lab 1)
 2차원 FIR 필터(convolution)를 구현해 grayscale 이미지에 3가지 커널 적용(Lab 2)
